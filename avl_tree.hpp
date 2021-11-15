@@ -1,10 +1,14 @@
-
-#include <optional>
+#include <cstdint>
 
 template<typename T> struct Node {
 	T elem;
-	T* parent = nullptr;
-	T* son, daughter = nullptr;
+
+	Node<T>* parent = nullptr;
+	Node<T>* son = nullptr;
+	Node<T>* daughter = nullptr;
+
+	int8_t bal = 0;
+
 
 	void place(T* loc);
 	inline bool hasParent() { return parent != nullptr; }
@@ -16,11 +20,14 @@ template<typename T> struct Node {
 	inline bool isDaughter() { return hasParent() && this == parent->daughter; }
 
 	Node(T _elem) : elem{_elem} {};
-}
+};
 
 template<typename T> class AvlTree {
-	T* root;
+	Node<T>* root = nullptr;
 
+	void print_(Node<T>* node);
 public:
 	void insert(T elem);
-}
+	void print() {	print_(root); }
+
+};
