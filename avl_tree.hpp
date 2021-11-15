@@ -26,6 +26,12 @@ template<typename T> class AvlTree {
 	Node<T>* root = nullptr;
 
 	void print_(Node<T>* node);
+	void balance(Node<T>* node);
+
+	void rotRight(Node<T>* node);
+	void rotLeft(Node<T>* node);
+	void rotRL(Node<T>* node);
+	void rotLR(Node<T>* node);
 public:
 	void insert(T elem);
 	void print() {	print_(root); }
