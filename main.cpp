@@ -16,20 +16,25 @@ template<typename T> std::ostream& operator<<(std::ostream& os, Node<T>* node) {
 int main() {
 
 	AvlTree<int> tree;
-	std::array<int, 7> list { 12, 8, 18, 5, 11, 17, 4 };
+	std::array<int, 11> list { 20, 25, 15, 10, 12, 60, 82, 49, 1, 11, 5 };
 
-	/*for (auto it = list.begin(); it < list.end(); it++) {
+	for (auto it = list.begin(); it < list.end(); it++) {
 		tree.insert(*it);
-	}*/
+	}
+	/*
 	for (int i = 0; i < 15; i++) {
 		int j = rand() % 100;
 		tree.insert(j);
-	}
+	}*/
 	//tree.insert(80);
 
-	format::printTree(tree.root, 7);
+	format::printTree(tree.root, list.size());
 
 	tree.print();
+
+	tree.rotLR(tree.root->son->son->daughter);
+	format::printTree(tree.root, list.size());
+
 	return 0;
 }
 

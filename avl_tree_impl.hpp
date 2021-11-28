@@ -37,14 +37,7 @@ template<typename T> void AvlTree<T>::insert(T elem) {
 	//Update balance factors
 	//The depth hasn't changed
 
-	while (current != root) {
-		current->parent->bal += current->isSon() ? -1 : 1;
-		if (current->parent->bal > 0 == current->isSon() ||
-			current->parent->bal == 0)
-			break;
-
-		current = current->parent;
-	}
+	balance(newNode, 0);
 }
 
 //loool this is a mess
@@ -90,8 +83,38 @@ template<typename T> void AvlTree<T>::rotLeft(Node<T>* pivot) {
 	parent->daughter = nullptr;
 }
 
+//Maybe try to optimize these later
+template<typename T> void AvlTree<T>::rotLR(Node<T>* pivot) {
+	rotLeft(pivot);
+	rotRight(pivot);
+}
+
+template<typename T> void AvlTree<T>::rotRL(Node<T>* pivot) {
+	rotRight(pivot);
+	rotLeft(pivot);
+}
+
+//
+template<typename T> void AvlTree<T>::balance(Node<T>* node, bool subMode) {
+	Node<T>* current = node;
+
+	//Update balance factors until
+	while (current != root) {
+		current->parent->bal += current->isSon()^subMode ? -1 : 1;
+
+		//Tree isn't less balanced in this case
+		if (current->parent->bal > 0 == current->isSon()^subMode ||
+			current->parent->bal == 0)
+			break;
+
+		current = current->parent;
+	}
+
+
+}
 
 //Consider changing to std::unique_ptr<T>
+//This is unused right now
 template<typename T> void
 AvlTree<T>::swap(Node<T>* node1, Node<T>* node2) {
 
