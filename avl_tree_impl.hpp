@@ -35,8 +35,14 @@ template<typename T> void AvlTree<T>::insert(T elem) {
 
 	current = newNode;
 	//Update balance factors
+	//The depth hasn't changed
+
 	while (current != root) {
 		current->parent->bal += current->isSon() ? -1 : 1;
+		if (current->parent->bal > 0 == current->isSon() ||
+			current->parent->bal == 0)
+			break;
+
 		current = current->parent;
 	}
 }

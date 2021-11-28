@@ -50,7 +50,7 @@ public:
 	void print_(Node<T>* node);
 //public:
 	void insert(T elem);
-	void print() {	print_(root); }
+	void print() { print_(root); }
 
 	Node<T>* getRoot() { return root; }
 

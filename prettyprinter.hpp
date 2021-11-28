@@ -3,6 +3,15 @@
 #include <iostream>
 #include "avl_tree_impl.hpp"
 
+/*Don't be a bad kid
+Or you'll be put inside the corner
+Now my former friends is acting like I owe them shit
+Had to grow then split
+Like mitosis or division
+You don't know this you ain't listen
+On the slow end bitch*/
+
+//This BARELY WORKS
 namespace format {
 	//Curse whoever the fuck wrote this code
 
