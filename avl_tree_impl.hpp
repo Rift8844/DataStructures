@@ -47,11 +47,47 @@ template<typename T> void AvlTree<T>::insert(T elem) {
 	}
 }
 
+//loool this is a mess
 template<typename T> void AvlTree<T>::rotRight(Node<T>* pivot) {
+	//swap(pivot, pivot->son);
+	//swap(pivot->son->son, pivot->daughter);
 	Node<T>* parent = pivot->parent;
-	Node<T>* grandparent = parent->parent;
+	Node<T>* grandparent = pivot->grandparent();
 
-	pivot->parent = grandparent;
+	if (parent != root) {
+		parent->parentSelfPtr() = pivot;
+		pivot->parent = grandparent;
+	} else {
+		pivot->parent = nullptr;
+		root = pivot;
+	}
+
+	parent->parent = pivot;
+	//Pivot shouldn't have a son
+	pivot->daughter = parent;
+
+
+	parent->son = nullptr;
+}
+
+template<typename T> void AvlTree<T>::rotLeft(Node<T>* pivot) {
+	Node<T>* parent = pivot->parent;
+	Node<T>* grandparent = pivot->grandparent();
+
+	if (parent != root) {
+		parent->parentSelfPtr() = pivot;
+		pivot->parent = grandparent;
+	} else {
+		pivot->parent = nullptr;
+		root = pivot;
+	}
+
+
+	parent->parent = pivot;
+	pivot->son = parent;
+
+	//Pivot shouldn't have a daughter
+	parent->daughter = nullptr;
 }
 
 
