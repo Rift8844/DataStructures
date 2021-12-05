@@ -4,6 +4,8 @@
 #pragma once
 
 template<typename T> void AvlTree<T>::insert(T elem) {
+	count++;
+
 	Node<T>* newNode = new Node<T>(elem);
 	if (!root) {
 		root = newNode;
@@ -37,7 +39,7 @@ template<typename T> void AvlTree<T>::insert(T elem) {
 	//Update balance factors
 	//The depth hasn't changed
 
-	balance(newNode, 0);
+	balance(newNode, false);
 }
 
 //loool this is a mess
@@ -45,42 +47,48 @@ template<typename T> void AvlTree<T>::rotRight(Node<T>* pivot) {
 	//swap(pivot, pivot->son);
 	//swap(pivot->son->son, pivot->daughter);
 	Node<T>* parent = pivot->parent;
-	Node<T>* grandparent = pivot->grandparent();
 
 	if (parent != root) {
 		parent->parentSelfPtr() = pivot;
-		pivot->parent = grandparent;
+		pivot->parent = pivot->grandparent();
 	} else {
 		pivot->parent = nullptr;
 		root = pivot;
 	}
 
 	parent->parent = pivot;
-	//Pivot shouldn't have a son
+	
+	if (pivot->daughter)
+		pivot->daughter->parent = parent;
+	
+	parent->son = pivot->daughter;
+
 	pivot->daughter = parent;
-
-
-	parent->son = nullptr;
 }
 
 template<typename T> void AvlTree<T>::rotLeft(Node<T>* pivot) {
+
 	Node<T>* parent = pivot->parent;
-	Node<T>* grandparent = pivot->grandparent();
 
 	if (parent != root) {
 		parent->parentSelfPtr() = pivot;
-		pivot->parent = grandparent;
+		pivot->parent = pivot->grandparent();
 	} else {
 		pivot->parent = nullptr;
 		root = pivot;
 	}
 
-
 	parent->parent = pivot;
-	pivot->son = parent;
 
-	//Pivot shouldn't have a daughter
-	parent->daughter = nullptr;
+
+	//Assign the pivot's son as the old parent's daughter
+	if (pivot->son)
+		pivot->son->parent = parent;
+
+	parent->daughter = pivot->son;
+
+
+	pivot->son = parent;
 }
 
 //Maybe try to optimize these later
@@ -94,23 +102,48 @@ template<typename T> void AvlTree<T>::rotRL(Node<T>* pivot) {
 	rotLeft(pivot);
 }
 
-//
 template<typename T> void AvlTree<T>::balance(Node<T>* node, bool subMode) {
 	Node<T>* current = node;
 
 	//Update balance factors until
-	while (current != root) {
+	while (current != root && abs(current->bal) < 2) {
+		int oldBal = current->parent->bal;
 		current->parent->bal += current->isSon()^subMode ? -1 : 1;
 
-		//Tree isn't less balanced in this case
-		if (current->parent->bal > 0 == current->isSon()^subMode ||
-			current->parent->bal == 0)
+		//The tree hasn't become less balanced
+		if (abs(current->parent->bal) < abs(oldBal))
 			break;
 
 		current = current->parent;
 	}
+	if (current->bal > 1) {
 
+		current = current->daughter;
 
+		if (current->bal > 0) {
+			rotLeft(current);
+			current->son->bal -= 2;
+		} else {
+			rotRL(current->son);
+			current->bal++;
+			current->parent->son->bal -= 2;
+		}
+
+		balance(node, true);
+	} else if (current->bal < -1) {
+
+		current = current->son;
+
+		if (current->bal < 0) {
+			rotRight(current);
+		} else {
+			rotLR(current->daughter);
+			current->bal--;
+			current->parent->daughter->bal += 2;
+		}
+
+		balance(node, true);
+	}
 }
 
 //Consider changing to std::unique_ptr<T>

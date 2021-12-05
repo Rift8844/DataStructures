@@ -11,9 +11,12 @@ Like mitosis or division
 You don't know this you ain't listen
 On the slow end bitch*/
 
-//This BARELY WORKS
+//This ONLY WORKS IF THE TREE IS BALANCED
 namespace format {
 	//Curse whoever the fuck wrote this code
+
+	template<typename T> void printRow(const Node<T> *p, const int height, int depth);
+	template<typename T> void getLine(const Node<T> *root, int depth, std::vector<T>& vals);
 
 	// create a pretty vertical tree
 	template<typename T> void printTree(Node<T> *p, int nodeCount)

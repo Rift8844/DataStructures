@@ -11,13 +11,15 @@ template<typename T> struct Node {
 
 	int8_t bal = 0;
 
-	inline bool hasParent() { return parent != nullptr; }
-	inline bool hasSon() { return son != nullptr; }
-	inline bool hasDaughter() { return daughter != nullptr; }
-	inline bool hasChild() { return hasSon() || hasDaughter(); }
+	//Non inline for debug purposes
+	bool hasParent() { return parent != nullptr; }
+	bool hasSon() { return son != nullptr; }
+	bool hasDaughter() { return daughter != nullptr; }
+	bool hasChild() { return hasSon() || hasDaughter(); }
 
-	inline bool isSon() { return hasParent() && this == parent->son; }
-	inline bool isDaughter() { return hasParent() && this == parent->daughter; }
+	bool isSon() { return hasParent() && this == parent->son; }
+	bool isDaughter() { return hasParent() && this == parent->daughter; }
+	Node<T>* grandparent() { return parent->parent; } 
 
 	/*The pointer the parent holds to this node.
 	The absence of a third ternary statement is intentional,
@@ -40,7 +42,7 @@ public:
 	freeing, or you will leak memory. Don't do it.
 	DON'T YOU DARE DROP THE FUCKING POINTER*/
 	void swap(Node<T>* node, Node<T>* loc);
-	void balance(Node<T>* node);
+	void balance(Node<T>* node, bool subMode);
 
 	void rotRight(Node<T>* node);
 	void rotLeft(Node<T>* node);
