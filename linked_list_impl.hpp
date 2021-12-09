@@ -5,18 +5,20 @@ template<typename T> void LinkedList<T>::insert(T elem, int pos) {
 	iterate(pos);
 	size++;
 
+	Node<T>* node = new Node<T>;
+	node->value = elem;
+
 	if (size == 1) {
-		current = new Node<T>;
+		current = node;
+		index++;
 
 		head = current;
 		tail = current;
 		return;
 	}
 
-	Node<T>* node = new Node<T>;
 	node->prev = current;
 	node->next = current->next;
-	node->value = elem;
 
 	if (current != tail)
 		current->next->prev = node;
@@ -51,11 +53,11 @@ template<typename T> T& LinkedList<T>::get(int pos) {
 
 
 template<typename T> void LinkedList<T>::iterate(int pos) {
-	if (pos < index) {
-		for (; index < pos - 1; index++)
-			current = current->next;
-	} else {
-		for (; index > pos + 1; index--)
+	if (index > pos) {
+		for (; index > pos; index--)
 			current = current->prev;
+	} else {
+		for (; index < pos; index++)
+			current = current->next;
 	}
 }

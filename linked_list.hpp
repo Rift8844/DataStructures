@@ -16,12 +16,12 @@ template<typename T> class LinkedList {
 	traditionally implemented, but, I'm not like
 	the other girls xd*/
 	int size = 0;
-	int index = 0;
+	int index = -1;
 
 	void iterate(int pos);
 
 public:
-	void push_back(T elem) { insert(elem, size - 1); }
+	void insert(T elem) { insert(elem, size - 1); }
 	void insert(T elem, int pos);
 	void remove(int pos);
 	void pop_back() { remove(size - 1); }
