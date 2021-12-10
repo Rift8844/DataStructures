@@ -1,31 +1,57 @@
 #include "linked_list.hpp"
+#include <exception>
 
 template<typename T> void LinkedList<T>::insert(T elem, int pos) {
 	//If something goes terribly wrong, you'll get a null pointer exception
 	iterate(pos);
-	size++;
 
 	Node<T>* node = new Node<T>;
 	node->value = elem;
 
-	if (size == 1) {
+	if (size == 0) {
 		current = node;
 		index++;
 
 		head = current;
 		tail = current;
+		size++;
+
 		return;
 	}
 
-	node->prev = current;
-	node->next = current->next;
+	//Node is inserted at the front
+	if (pos == size) {
+		node->prev = current;
+		current->next = node;
 
-	if (current != tail)
-		current->next->prev = node;
+		node->next = nullptr;
 
-	current->next = node;
+		head = node;
+	} else {
+		/*When insertion is done, the node at
+		the index the new node is being inserted
+		is put **ahead** of the new node*/
+		node->prev = current->prev;
+		node->next = current;
+
+		if (node->prev == nullptr) {
+			tail = node;
+		} else {
+			current->prev->next = node;
+		}
+
+		current->prev = node;
+	}
+
+
+
+	current = node;
+
+	index = pos;
+	size++;
 }
 
+/*
 template<typename T> void LinkedList<T>::remove(int pos) {
 	iterate(pos);
 	size--;
@@ -51,13 +77,19 @@ template<typename T> T& LinkedList<T>::get(int pos) {
 	return current->value;
 }
 
+*/
 
 template<typename T> void LinkedList<T>::iterate(int pos) {
+	if (pos < -1 || pos > size)
+		throw std::exception();
+
 	if (index > pos) {
-		for (; index > pos; index--)
+		for (; index > pos; index--) {
 			current = current->prev;
+		}
 	} else {
-		for (; index < pos; index++)
+		for (; index < pos && index < size - 1; index++) {
 			current = current->next;
+		}
 	}
 }
