@@ -26,7 +26,7 @@ template<typename T> void LinkedList<T>::insert(T elem, int pos) {
 
 		node->next = nullptr;
 
-		head = node;
+		tail = node;
 	} else {
 		/*When insertion is done, the node at
 		the index the new node is being inserted
@@ -51,25 +51,28 @@ template<typename T> void LinkedList<T>::insert(T elem, int pos) {
 	size++;
 }
 
-/*
-template<typename T> void LinkedList<T>::remove(int pos) {
+/*template<typename T> void LinkedList<T>::remove(int pos) {
 	iterate(pos);
 	size--;
 
 	if (current != head) {
-		current->prev->next = current;
+		current->prev->next = current->next;
 	} else if (current != tail) {
 		head = head->next;
 	}
 
 	if (current != tail) {
-		current->next->prev = current;
+		current->next->prev = current->prev;
 	} else if (current != head) {
 		tail = tail->prev;
 	}
 
+	Node<T>* tmp = current->prev;
 	delete current;
-}
+
+	index--;
+}*/
+
 
 template<typename T> T& LinkedList<T>::get(int pos) {
 	iterate(pos);
@@ -77,7 +80,6 @@ template<typename T> T& LinkedList<T>::get(int pos) {
 	return current->value;
 }
 
-*/
 
 template<typename T> void LinkedList<T>::iterate(int pos) {
 	if (pos < -1 || pos > size)

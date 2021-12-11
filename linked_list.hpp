@@ -23,7 +23,7 @@ template<typename T> class LinkedList {
 public:
 	void insert(T elem) { insert(elem, size); }
 	void insert(T elem, int pos);
-	//void remove(int pos);
+	void remove(int pos);
 	void pop_back() { remove(size - 1); }
 
 	T& get(int pos);
