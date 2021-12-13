@@ -1,5 +1,6 @@
 #include "avl_tree.hpp"
 #include <iostream>
+#include <cmath>
 
 #pragma once
 
@@ -44,6 +45,7 @@ template<typename T> void AvlTree<T>::insert(T elem) {
 
 //loool this is a mess
 template<typename T> void AvlTree<T>::rotRight(Node<T>* pivot) {
+	rRots++;
 	//swap(pivot, pivot->son);
 	//swap(pivot->son->son, pivot->daughter);
 	Node<T>* parent = pivot->parent;
@@ -67,6 +69,7 @@ template<typename T> void AvlTree<T>::rotRight(Node<T>* pivot) {
 }
 
 template<typename T> void AvlTree<T>::rotLeft(Node<T>* pivot) {
+	lRots++;
 
 	Node<T>* parent = pivot->parent;
 
@@ -93,11 +96,17 @@ template<typename T> void AvlTree<T>::rotLeft(Node<T>* pivot) {
 
 //Maybe try to optimize these later
 template<typename T> void AvlTree<T>::rotLR(Node<T>* pivot) {
+	lRots--;
+	rRots--;
+	lrRots++;
 	rotLeft(pivot);
 	rotRight(pivot);
 }
 
 template<typename T> void AvlTree<T>::rotRL(Node<T>* pivot) {
+	rRots--;
+	lRots--;
+	rlRots++;
 	rotRight(pivot);
 	rotLeft(pivot);
 }

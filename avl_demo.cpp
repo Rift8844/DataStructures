@@ -71,13 +71,31 @@ uint64_t findBadSeed(int numTests) {
 	return worstSeed;
 }
 
-int main() {
+int testSearch(Node<int>* node, int num, bool isRoot = false) {
+	static int iters;
+	if (isRoot)
+		iters = 0;
 
+	if (node->elem < num) {
+		iters++;
+		return testSearch(node->daughter, num);
+	} else if (node->elem > num) {
+		iters++;
+		return testSearch(node->son, num);
+	} else {
+		return iters;
+	}
+}
+
+int main() {
+	/*Ok I'll acknowledge that this isn't the
+	best quality code that I've ever written lol*/
 	AvlTree<int> tree;
 
+	constexpr uint64_t badSeed = 1638737580;
 	uint64_t systime = time(NULL);
 
-	srand(1638737580);
+	srand(systime);
 
 	//std::cout << systime << std::endl;
 
@@ -98,10 +116,20 @@ int main() {
 	}
 
 
-	//format::printTree(tree.root, tree.count);
-	//checkTree(tree.root);
+	format::printTree(tree.root, tree.count);
+	checkTree(tree.root);
 
-	//tree.insert(80);
+	std::cout << "Number of elements in tree: " << tree.count << std::endl;
+	int maxIterCount = 0;
+	for (int i = 0; i < 20; i++) {
+		maxIterCount = std::max(maxIterCount, testSearch(tree.root, list[i], true));
+	}
+
+	std::cout << "Rotation type counts:\nright: " << tree.rRots <<
+	"\nleft: " << tree.lRots << "\nrightLeft: " << tree.rlRots <<
+	"\nleftRight: " << tree.lrRots << std::endl;
+	std::cout << "Most iterations needed for a search: " << maxIterCount << std::endl;
+
 
 	return 0;
 }
