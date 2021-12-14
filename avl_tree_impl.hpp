@@ -145,6 +145,7 @@ template<typename T> void AvlTree<T>::balance(Node<T>* node, bool subMode) {
 
 		if (current->bal < 0) {
 			rotRight(current);
+			current->daughter->bal += 2;
 		} else {
 			rotLR(current->daughter);
 			current->bal--;
