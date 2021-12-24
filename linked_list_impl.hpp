@@ -77,6 +77,9 @@ template<typename T> void LinkedList<T>::remove(int pos) {
 
 
 template<typename T> T& LinkedList<T>::get(int pos) {
+	if (pos >= size)
+		throw std::exception();
+
 	iterate(pos);
 
 	return current->value;

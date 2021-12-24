@@ -22,7 +22,6 @@ int main() {
 
 	list.insert("Done!");
 	std::cout << list.get(0) << std::endl;
-	std::cout << list.get(1);
 
 	return 0;
 }
