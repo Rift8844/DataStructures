@@ -51,7 +51,7 @@ template<typename T> void LinkedList<T>::insert(T elem, int pos) {
 	size++;
 }
 
-/*template<typename T> void LinkedList<T>::remove(int pos) {
+template<typename T> void LinkedList<T>::remove(int pos) {
 	iterate(pos);
 	size--;
 
@@ -70,8 +70,10 @@ template<typename T> void LinkedList<T>::insert(T elem, int pos) {
 	Node<T>* tmp = current->prev;
 	delete current;
 
+	current = tmp;
+
 	index--;
-}*/
+}
 
 
 template<typename T> T& LinkedList<T>::get(int pos) {
