@@ -191,5 +191,7 @@ template<typename T> void AvlTree<T>::print_(Node<T>* node) {
 	std::cout << 
 	"------" << 
 	"\nValue: " << node->elem <<
-	"\nBalance: " << (int16_t) node->bal << std::endl;
+	"\nBalance: " << (int16_t) node->bal << 
+	"\nPointer: 0x" << std::hex << reinterpret_cast<uint64_t>(node)
+	 << std::dec << std::endl;
 }

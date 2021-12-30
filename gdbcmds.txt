@@ -1,0 +1,17 @@
+p root->elem
+
+p root->son->elem
+p root->son->son->elem
+p root->son->daughter->elem
+
+p root->daughter->elem
+p root->daughter->son->elem
+p root->daughter->daughter->elem
+
+
+Bug notes:
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000555555555b9c in AvlTree<int>::balance (this=0x7fffffffde50, 
+    node=0x55555576c410, subMode=true) at avl_tree_impl.hpp:146
+146			if (current->bal < 0) {
