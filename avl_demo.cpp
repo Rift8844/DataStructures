@@ -37,8 +37,7 @@ bool checkTree(Node<int>* node) {
 
 	depth--;
 
-	if (depth == 0)
-		return true;
+	return true;
 }
 
 
