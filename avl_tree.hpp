@@ -35,7 +35,13 @@ template<typename T> class AvlTree {
 	//Tree depth
 
 public:
+	//Debug info
 	int count = 0;
+	int rlRots = 0;
+	int lrRots = 0;
+	int rRots = 0;
+	int lRots = 0;
+	//----------------------
 	Node<T>* root = nullptr;
 
 	/*Do NOT drop the returned pointer without

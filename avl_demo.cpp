@@ -16,7 +16,7 @@ template<typename T> std::ostream& operator<<(std::ostream& os, Node<T>* node) {
 
 }
 
-void checkTree(Node<int>* node) {
+bool checkTree(Node<int>* node) {
 	static int depth = 0;
 
 	depth++;
@@ -25,21 +25,19 @@ void checkTree(Node<int>* node) {
 		checkTree(node->son);
 
 		if (node->son->parent != node)
-			throw std::exception();
+			return false;
 	}
 
 	if (node->hasDaughter()) {
 		checkTree(node->daughter);
 
 		if (node->daughter->parent != node)
-			throw std::exception();
+			return false;
 	}
 
 	depth--;
 
-	if (depth == 0) {
-		std::cout << "All checks passed!" << std::endl;
-	}
+	return true;
 }
 
 
@@ -71,20 +69,49 @@ uint64_t findBadSeed(int numTests) {
 	return worstSeed;
 }
 
-int main() {
+int testSearch(Node<int>* node, int num, bool isRoot = false) {
+	static int iters;
+	if (isRoot)
+		iters = 0;
 
+	if (node->elem < num) {
+		iters++;
+		return testSearch(node->daughter, num);
+	} else if (node->elem > num) {
+		iters++;
+		return testSearch(node->son, num);
+	} else {
+		return iters;
+	}
+}
+
+int main() {
+	/*Ok I'll acknowledge that this isn't the
+	best quality code that I've ever written.
+	**To be fair** though, this is one of the
+	most advanced projects, if not the most
+	advanced project, that I've ever worked on!*/
 	AvlTree<int> tree;
+
+	/*List of bad seeds:
+	1639449189
+
+	Good seeds:
+	1639449241*/
 
 	uint64_t systime = time(NULL);
 
-	srand(1638737580);
+	srand(1639449189);
 
 	//std::cout << systime << std::endl;
 
-	std::array<int, 20> list;
-	std::cout << "Number test suite: \n";
+	int constexpr numTests = 50;
 
-	for (int i = 0; i < 20; i++) {
+	std::array<int, numTests> list;
+	std::cout << "Test seed: " << systime << 
+	"Number test suite: \n";
+
+	for (int i = 0; i < numTests; i++) {
 		int x = rand() % 100;
 		//std::cout << x << std::endl;
 		list[i] = x;
@@ -92,17 +119,38 @@ int main() {
 
 
 	for (auto it = list.begin(); it < list.end(); it++) {
-		std::cout << *it << std::endl;
+		std::cout << "\n\nInsertee: " << *it << std::endl;
+
 		tree.insert(*it);
-		//format::printTree(tree.root, tree.count);
+
+		format::printTree(tree.root, tree.count);
+		tree.print();
+
+		
+		if (!checkTree(tree.root))
+			throw std::exception();
 	}
 
 
-	//format::printTree(tree.root, tree.count);
-	//checkTree(tree.root);
+	format::printTree(tree.root, tree.count);
+	checkTree(tree.root);
 
-	//tree.insert(80);
+	std::cout << "Number of elements in tree: " << tree.count << std::endl;
+	int maxIterCount = 0;
+	for (int i = 0; i < numTests; i++) {
+		maxIterCount = std::max(maxIterCount, testSearch(tree.root, list[i], true));
+	}
 
+	std::cout << "Rotation type counts:\nright: " << tree.rRots <<
+	"\nleft: " << tree.lRots << "\nrightLeft: " << tree.rlRots <<
+	"\nleftRight: " << tree.lrRots << std::endl;
+	std::cout << "Most iterations needed for a search: " << maxIterCount << std::endl;
+
+	/*	DET SOM ENGANG VAR HITS SO HARD,
+	like, DEFINITELY BETTER THAN I REMEMBERED!
+	Also, I'm listening to it on my CALs,
+	and while it sounds better on my 6XXs,
+	it stil sounds pretty good on my new pair
+	of cans.*/
 	return 0;
 }
-
