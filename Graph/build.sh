@@ -1,0 +1,1 @@
+g++ Point.h Point.cpp main.cpp -o graphDemo
