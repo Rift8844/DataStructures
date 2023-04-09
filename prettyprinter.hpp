@@ -3,17 +3,8 @@
 #include <iostream>
 #include "avl_tree_impl.hpp"
 
-/*Don't be a bad kid
-Or you'll be put inside the corner
-Now my former friends is acting like I owe them shit
-Had to grow then split
-Like mitosis or division
-You don't know this you ain't listen
-On the slow end bitch*/
-
 //This ONLY WORKS IF THE TREE IS BALANCED
 namespace format {
-	//Curse whoever the fuck wrote this code
 
 	template<typename T> void printRow(const Node<T> *p, const int height, int depth);
 	template<typename T> void getLine(const Node<T> *root, int depth, std::vector<T>& vals);
